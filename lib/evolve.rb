@@ -1,1 +1,1 @@
-require 'evolve/version'
+require_relative 'evolve/gene'
