@@ -19,7 +19,7 @@ describe Evolve::Gene do
         @gene = described_class.new(:gene, values: @values)
       end
 
-      it "returns one of the values" do
+      it "returns one of the values provided" do
         expect(@values).to include(@gene.sample)
       end
     end
@@ -30,7 +30,7 @@ describe Evolve::Gene do
         @gene = described_class.new(:gene, range: @range)
       end
 
-      it "returns one of the values" do
+      it "returns a value within the provided range" do
         expect(@range).to cover(@gene.sample)
       end
     end
