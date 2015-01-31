@@ -11,6 +11,11 @@ module Evolve
         gene_class = options[:class] || Evolve::Gene
         genes[name] = gene_class.new(name, options)
       end
+
+      def evolve(options)
+        strategy_class = options[:class] || Evolve::Evolution::Strategy
+        strategy_class.new(self, options).evolve!
+      end
     end
 
     attr_reader :genes, :fitness
