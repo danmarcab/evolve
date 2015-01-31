@@ -12,15 +12,22 @@ module Evolve
       end
     end
 
-    attr_reader :genes
+    attr_reader :genes, :fitness
+
+    DEFAULT_FITNESS = 0
 
     def initialize(explicit_genes = {})
       @genes = species_genes.each_with_object({}) do |(name, gene), genes|
         genes[name] = explicit_genes[name] ||  gene.sample
       end
+      @fitness = evaluate_fitness
     end
 
-    private
+    protected
+
+    def evaluate_fitness
+      DEFAULT_FITNESS
+    end
 
     def species_genes
       self.class.genes
