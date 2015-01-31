@@ -40,16 +40,4 @@ describe Evolve::Generation do
       end
     end
   end
-
-  describe "#next_generation" do
-    before do
-      @generation = described_class.new(@species)
-      @individuals = @generation.individuals
-    end
-
-    it "replace previous individuals" do
-      @generation.next_generation!
-      expect(@generation.individuals).not_to eq(@individuals)
-    end
-  end
 end

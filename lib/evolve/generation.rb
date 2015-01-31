@@ -9,9 +9,5 @@ module Evolve
       @size = options[:size] || DETAULT_GENERATION_SIZE
       @individuals = @size.times.map { @species.new }
     end
-
-    def next_generation!
-      @individuals = @individuals.shuffle
-    end
   end
 end
