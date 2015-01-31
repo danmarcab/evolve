@@ -8,7 +8,8 @@ module Evolve
       def gene(name, options={})
         raise NameError.new("Gene name '#{name}' already in use") if genes.has_key?(name)
 
-        genes[name] = Evolve::Gene.new(name, options)
+        gene_class = options[:class] || Evolve::Gene
+        genes[name] = gene_class.new(name, options)
       end
     end
 

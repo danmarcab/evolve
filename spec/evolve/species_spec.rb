@@ -17,6 +17,21 @@ describe Evolve::Species do
       expect(described_class.genes.keys).to contain_exactly(:gene)
     end
 
+    it "adds an instance of Evolve::Gene" do
+      described_class.gene(:gene)
+      expect(described_class.genes[:gene]).to be_a(Evolve::Gene)
+    end
+
+    context "when a gene providing a class" do
+      before do
+        @gene_class = Class.new(Evolve::Gene)
+      end
+      it "adds an instance of the class provided" do
+        described_class.gene(:gene, class: @gene_class)
+        expect(described_class.genes[:gene]).to be_a(@gene_class)
+      end
+    end
+
     context "when adding two genes with the same name" do
       it "raises a name error" do
         expect{
