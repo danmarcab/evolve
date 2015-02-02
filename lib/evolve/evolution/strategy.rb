@@ -8,39 +8,39 @@ module Evolve
       def initialize(species, options={})
         @species = species
         @steps = options[:steps] || DEFAULT_STEPS
-        @generation_size = options[:generation_size]
+        @population_size = options[:population_size]
         @fitness_goal = options[:fitness_goal]
         @max_generations = options[:max_generations]
       end
 
-      def initial_generation
-        @current_generation = Evolve::Generation.new(@species, size: @generation_size)
+      def initial_population
+        @population = Evolve::Population.new(@species, size: @population_size)
       end
 
       def evolve!
-        initial_generation
+        initial_population
 
         until fitness_goal_reached? || max_generations_reached? do
           next_generation!
         end
-        @current_generation.best_individual
+        @population
       end
 
       def next_generation!
         @steps.each do |step|
           send(step)
         end
-        @current_generation.number += 1
+        @population.generation += 1
       end
 
       private
 
       def fitness_goal_reached?
-        @fitness_goal ? @current_generation.best_individual.fitness >= @fitness_goal : false
+        @fitness_goal ? @population.best_individual.fitness >= @fitness_goal : false
       end
 
       def max_generations_reached?
-        @max_generations ? @max_generations == @current_generation.number : false
+        @max_generations ? @max_generations == @population.generation : false
       end
 
       def selection

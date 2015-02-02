@@ -1,15 +1,15 @@
 module Evolve
-  class Generation
+  class Population
     attr_reader :species, :size, :individuals
-    attr_accessor :number
+    attr_accessor :generation
 
-    DETAULT_GENERATION_SIZE = 10
+    DETAULT_POPULATION_SIZE = 10
 
     def initialize(species, options={})
       @species = species
-      @size = options[:size] || DETAULT_GENERATION_SIZE
+      @size = options[:size] || DETAULT_POPULATION_SIZE
       @individuals = @size.times.map { @species.new }
-      @number = 1
+      @generation = 1
     end
 
     def best_individual
