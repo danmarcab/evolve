@@ -12,9 +12,20 @@ module Evolve
         genes[name] = gene_class.new(name, options)
       end
 
+      def population
+        @population
+      end
+
+      def strategy
+        @strategy
+      end
+
       def evolve(options)
         strategy_class = options[:class] || Evolve::Evolution::Strategy
-        strategy_class.new(self, options).evolve!
+        @strategy ||= strategy_class.new(options)
+
+        @population = Evolve::Population.new(self, size: options[:population_size])
+        Evolve::Evolution::Runner.new(options).evolve(self)
       end
     end
 

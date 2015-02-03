@@ -5,11 +5,16 @@ module Evolve
 
     DETAULT_POPULATION_SIZE = 10
 
-    def initialize(species, options={})
+    def initialize(species, options)
       @species = species
       @size = options[:size] || DETAULT_POPULATION_SIZE
       @individuals = @size.times.map { @species.new }
       @generation = 1
+    end
+
+    def next_generation!(evolution_strategy)
+      @individuals = evolution_strategy.next_generation(@individuals)
+      @generation += 1
     end
 
     def best_individual

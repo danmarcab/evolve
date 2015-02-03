@@ -1,21 +1,16 @@
 module Evolve
   module Evolution
-    class Strategy
-      attr_reader :species
-
-      DEFAULT_STEPS = [:selection, :reproduction, :mutation]
-
+    class Runner
       def initialize(options={})
-        @steps = options[:steps] || DEFAULT_STEPS
         @fitness_goal = options[:fitness_goal]
         @max_generations = options[:max_generations]
       end
 
-      def next_generation(individuals)
-        @steps.each do |step|
-          individuals = send(step, individuals)
+      def evolve(species)
+        until evolution_finished?(species.population) do
+          species.population.next_generation!(species.strategy)
         end
-        individuals
+        species.population
       end
 
       def evolution_finished?(population)
@@ -30,18 +25,6 @@ module Evolve
 
       def max_generations_reached?(generation)
         @max_generations ? @max_generations == generation : false
-      end
-
-      def selection(individuals)
-        individuals
-      end
-
-      def reproduction(individuals)
-        individuals
-      end
-
-      def mutation(individuals)
-        individuals
       end
     end
   end
