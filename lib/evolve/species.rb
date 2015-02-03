@@ -17,15 +17,32 @@ module Evolve
       end
 
       def strategy
-        @strategy
+        config.strategy
       end
 
-      def evolve(options)
-        strategy_class = options[:class] || Evolve::Evolution::Strategy
-        @strategy ||= strategy_class.new(options)
+      def runner
+        config.runner
+      end
 
-        @population = Evolve::Population.new(self, size: options[:population_size])
-        Evolve::Evolution::Runner.new(options).evolve(self)
+      def config
+        @config ||= Evolve::Evolution::Configuration.new
+      end
+
+      def evolve_with(options = {}, &block)
+        @config = Evolve::Evolution::Configuration.new(options, &block)
+      end
+
+      def evolve!
+        born!
+        runner.evolve(self)
+      end
+
+      def born!
+        @population = Evolve::Population.new(self, config.population_options)
+      end
+
+      def next_generation!
+        @population.next_generation!(strategy)
       end
     end
 

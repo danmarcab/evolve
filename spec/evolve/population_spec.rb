@@ -32,7 +32,7 @@ describe Evolve::Population do
 
     context "when a size provided in options" do
       before do
-        @population = described_class.new(@species, size: 20)
+        @population = described_class.new(@species, initial_population_size: 20)
       end
 
       it "sets the size to the size provided" do

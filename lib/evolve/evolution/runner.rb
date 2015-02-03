@@ -1,9 +1,11 @@
 module Evolve
   module Evolution
     class Runner
+      DEFAULT_MAX_GENERATIONS = 1000
+
       def initialize(options={})
         @fitness_goal = options[:fitness_goal]
-        @max_generations = options[:max_generations]
+        @max_generations = options[:max_generations] || DEFAULT_MAX_GENERATIONS
       end
 
       def evolve(species)

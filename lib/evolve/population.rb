@@ -5,9 +5,9 @@ module Evolve
 
     DETAULT_POPULATION_SIZE = 10
 
-    def initialize(species, options)
+    def initialize(species, options={})
       @species = species
-      @size = options[:size] || DETAULT_POPULATION_SIZE
+      @size = options[:initial_population_size] || DETAULT_POPULATION_SIZE
       @individuals = @size.times.map { @species.new }
       @generation = 1
     end
