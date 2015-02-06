@@ -12,8 +12,8 @@ module Evolve
       @generation = 1
     end
 
-    def next_generation!(evolution_strategy)
-      @individuals = evolution_strategy.next_generation(@individuals)
+    def next_generation!
+      @individuals = species.evolution_strategy.next_generation(@individuals)
       @generation += 1
     end
 

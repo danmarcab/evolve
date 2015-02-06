@@ -16,7 +16,7 @@ module Evolve
         @population
       end
 
-      def strategy
+      def evolution_strategy
         config.strategy
       end
 
@@ -42,7 +42,7 @@ module Evolve
       end
 
       def next_generation!
-        @population.next_generation!(strategy)
+        @population.next_generation!
       end
     end
 
@@ -54,7 +54,10 @@ module Evolve
       @genes = species_genes.each_with_object({}) do |(name, gene), genes|
         genes[name] = explicit_genes[name] ||  gene.sample
       end
-      @fitness = evaluate_fitness
+    end
+
+    def fitness
+      @fitness ||= evaluate_fitness
     end
 
     protected

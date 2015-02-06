@@ -1,12 +1,13 @@
 module Evolve
   module Evolution
     class Strategy
-      attr_reader :species
 
       DEFAULT_STEPS = [:selection, :reproduction, :mutation]
+      DEFAULT_FITNESS_GOAL = :bigger_better
 
       def initialize(options={})
         @steps = options[:evolution_steps] || DEFAULT_STEPS
+        @fitness_goal = options[:fitness_goal] || DEFAULT_FITNESS_GOAL
       end
 
       def next_generation(individuals)

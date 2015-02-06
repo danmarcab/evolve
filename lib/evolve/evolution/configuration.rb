@@ -3,8 +3,8 @@ module Evolve
     class Configuration
       attr_accessor :strategy, :runner, :population_options
 
-      STRATEGY_OPTIONS = [:evolution_steps]
-      RUNNER_OPTIONS = [:fitness_goal, :max_generations]
+      STRATEGY_OPTIONS = [:evolution_steps, :fitness_goal]
+      RUNNER_OPTIONS = [:fitness_goal, :fitness_delta, :max_generations]
       POPULATION_OPTIONS = [:initial_population_size]
 
       attr_accessor *STRATEGY_OPTIONS

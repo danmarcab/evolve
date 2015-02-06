@@ -4,15 +4,18 @@ module Evolve
       DEFAULT_MAX_GENERATIONS = 1000
 
       def initialize(options={})
-        @fitness_goal = options[:fitness_goal]
+        if options[:fitness_goal].is_a?(Numeric)
+          @fitness_goal = options[:fitness_goal]
+          @fitness_delta = options[:fitness_delta] || 0
+        end
+
         @max_generations = options[:max_generations] || DEFAULT_MAX_GENERATIONS
       end
 
       def evolve(species)
         until evolution_finished?(species.population) do
-          species.population.next_generation!(species.strategy)
+          species.next_generation!
         end
-        species.population
       end
 
       def evolution_finished?(population)
@@ -22,7 +25,11 @@ module Evolve
       private
 
       def fitness_goal_reached?(fitness)
-        @fitness_goal ? fitness >= @fitness_goal : false
+        if @fitness_goal
+          (@fitness_goal - fitness).abs <= @fitness_delta
+        else
+          false
+        end
       end
 
       def max_generations_reached?(generation)
