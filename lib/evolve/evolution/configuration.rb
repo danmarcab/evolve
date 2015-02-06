@@ -40,7 +40,8 @@ module Evolve
 
       def get_options(option_keys)
         option_keys.each_with_object({}) do |option, options_hash|
-          options_hash[option] = self.send(option)
+          value = self.send(option)
+          options_hash[option] = value if value
         end
       end
 
