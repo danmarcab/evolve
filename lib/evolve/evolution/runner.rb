@@ -1,12 +1,15 @@
 module Evolve
   module Evolution
     class Runner
+      DEFAULT_FITNESS_DELTA = 0
       DEFAULT_MAX_GENERATIONS = 1000
+
+      attr_reader :max_generations, :fitness_goal, :fitness_delta
 
       def initialize(options={})
         if options[:fitness_goal].is_a?(Numeric)
           @fitness_goal = options[:fitness_goal]
-          @fitness_delta = options[:fitness_delta] || 0
+          @fitness_delta = options[:fitness_delta] || DEFAULT_FITNESS_DELTA
         end
 
         @max_generations = options[:max_generations] || DEFAULT_MAX_GENERATIONS
