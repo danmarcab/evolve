@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    =  'https://github.com/danmarcab/evolve'
 
   s.add_development_dependency "rspec", "~>3.0"
-  s.add_development_dependency "simplecov", "~> 0.9"
+  s.add_development_dependency "codeclimate-test-reporter", "~> 0.9"
 
   s.files         = `git ls-files -- lib/*`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
