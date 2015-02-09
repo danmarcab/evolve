@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'evolve'
 
 RSpec.configure do |config|

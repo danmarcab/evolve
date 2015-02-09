@@ -1,6 +1,10 @@
 source "https://rubygems.org"
 
-group 'development' do
+group 'test' do
   gem 'rspec', '~>3.0'
+  gem 'simplecov', :require => false
+end
+
+group 'development', 'test' do
   gem 'debugger'
 end
