@@ -42,64 +42,89 @@ describe Evolve::Species do
     end
   end
 
-  describe "#new" do
-    describe "#fitness" do
-      context "when the Species does not have a evaluate_fitness method defined" do
-        it "returns the default fitness value" do
-          expect(described_class.new.fitness).to eq(described_class::DEFAULT_FITNESS)
-        end
-      end
-
-      context "when the Species have a evaluate_fitness method defined" do
-        before do
-          @species = Class.new(described_class)
-          @species.class_eval do
-            define_method(:evaluate_fitness) { 100 }
-          end
-        end
-
-        it "returns the value calculated by the method provided" do
-          expect(@species.new.fitness).to eq(100)
-        end
-      end
-
+  describe ".evolve_with" do
+    before do
+      @options = { max_generations: 10 }
     end
 
-    describe "#genes" do
-      context "when the Species have a list of genes" do
-        before do
-          described_class.gene(:gene1, values: [1])
-          described_class.gene(:gene2, values: [2])
-          described_class.gene(:gene3, values: [3])
+    it "sets up the configuration" do
+      expect(Evolve::Evolution::Configuration).to receive(:new).with(@options)
+      described_class.evolve_with(@options)
+    end
+  end
+
+  describe ".evolve!" do
+    it "calls born! to create initial population" do
+      expect(described_class).to receive(:born!).and_call_original
+      described_class.evolve!
+    end
+
+    it "calls evolve in the evolution runner" do
+      @runner = double
+      allow(@runner).to receive(:evolve)
+      allow(described_class).to receive(:runner).and_return(@runner)
+
+      expect(@runner).to receive(:evolve).with(described_class)
+      described_class.evolve!
+    end
+  end
+
+  describe "#fitness" do
+    context "when the Species does not have a evaluate_fitness method defined" do
+      it "returns the default fitness value" do
+        expect(described_class.new.fitness).to eq(described_class::DEFAULT_FITNESS)
+      end
+    end
+
+    context "when the Species have a evaluate_fitness method defined" do
+      before do
+        @species = Class.new(described_class)
+        @species.class_eval do
+          define_method(:evaluate_fitness) { 100 }
+        end
+      end
+
+      it "returns the value calculated by the method provided" do
+        expect(@species.new.fitness).to eq(100)
+      end
+    end
+
+  end
+
+  describe "#genes" do
+    context "when the Species have a list of genes" do
+      before do
+        described_class.gene(:gene1, values: [1])
+        described_class.gene(:gene2, values: [2])
+        described_class.gene(:gene3, values: [3])
+      end
+
+      subject { described_class.new.genes }
+
+      it "is a hash" do
+        expect(subject).to be_a Hash
+      end
+
+      it "has the name of the genes as keys" do
+        expect(subject.keys).to contain_exactly(:gene1, :gene2, :gene3)
+      end
+
+      it "has the values of the genes as the hash values" do
+        expect(subject.values).to contain_exactly(1, 2, 3)
+      end
+
+      context "when passing genes explicitly" do
+        subject { described_class.new(gene2: 100).genes }
+
+        it "overrides the genes provided" do
+          expect(subject[:gene2]).to eq(100)
         end
 
-        subject { described_class.new.genes }
-
-        it "is a hash" do
-          expect(subject).to be_a Hash
+        it "does not override the genes not provided" do
+          expect(subject[:gene1]).to eq(1)
+          expect(subject[:gene3]).to eq(3)
         end
 
-        it "has the name of the genes as keys" do
-          expect(subject.keys).to contain_exactly(:gene1, :gene2, :gene3)
-        end
-
-        it "has the values of the genes as the hash values" do
-          expect(subject.values).to contain_exactly(1, 2, 3)
-        end
-
-        context "when passing genes explicitly" do
-          subject { described_class.new(gene2: 100).genes }
-
-          it "overrides the genes provided" do
-            expect(subject[:gene2]).to eq(100)
-          end
-
-          it "does not override the genes not provided" do
-            expect(subject[:gene1]).to eq(1)
-            expect(subject[:gene3]).to eq(3)
-          end
-
-        end
       end
     end
   end
