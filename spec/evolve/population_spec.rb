@@ -40,4 +40,44 @@ describe Evolve::Population do
       end
     end
   end
+
+  describe "#next_generation!" do
+    before do
+      @population = described_class.new(@species)
+    end
+
+    it "calls the strategy to get the new generation" do
+      expect(@species.evolution_strategy).to receive(:next_generation).with(@population.individuals)
+      @population.next_generation!
+    end
+
+    it "sets the individuals to the next generation" do
+      @next_generation = double
+      allow(@species.evolution_strategy).to receive(:next_generation).and_return(@next_generation)
+
+      @population.next_generation!
+      expect(@population.individuals).to eq(@next_generation)
+    end
+
+    it "increments the generation number" do
+      expect{
+        @population.next_generation!
+      }.to change(@population, :generation).by(1)
+    end
+  end
+
+  describe "#best_individual" do
+    before do
+      @population = described_class.new(@species)
+      @population.individuals.each do |individual|
+        allow(individual).to receive(:fitness).and_return(rand)
+      end
+    end
+
+    it "returns the individual with the higher fitness" do
+      max_fitness = @population.individuals.map(&:fitness).max
+      best_individual = @population.individuals.find { |ind| ind.fitness == max_fitness }
+      expect(@population.best_individual).to eq(best_individual)
+    end
+  end
 end

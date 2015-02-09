@@ -18,7 +18,7 @@ module Evolve
     end
 
     def best_individual
-      @individuals.sort{ |individual| individual.fitness}.last
+      @individuals.sort{ |ind_a, ind_b| ind_a.fitness <=> ind_b.fitness}.last
     end
   end
 end
