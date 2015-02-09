@@ -1,6 +1,9 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter '/spec/'
+end
 
+require 'debugger'
 require 'evolve'
 
 RSpec.configure do |config|
