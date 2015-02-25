@@ -17,6 +17,9 @@ module Evolve
 
       def evolve(species)
         until evolution_finished?(species.population) do
+          puts "best #{species.population.best_individual.genes}"
+          puts "Fitness #{species.population.best_individual.fitness}"
+          # puts "Population #{species.population.individuals.size}"
           species.next_generation!
         end
       end

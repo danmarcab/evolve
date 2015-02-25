@@ -16,5 +16,9 @@ module Evolve
         rand(@range)
       end
     end
+
+    def combine(value_a, value_b)
+      [value_b, value_a]
+    end
   end
 end
